@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,6 +16,32 @@ namespace frog_updater
 
         static void Main(string[] args)
         {
+            if (args.Length == 1)
+            {
+                int pos = Int16.Parse(args[0], System.Globalization.NumberStyles.HexNumber);
+                using (var sr = new BinaryReader(File.OpenRead(path)))
+                {
+                    sr.BaseStream.Seek(pos, SeekOrigin.Begin);
+                    Int16 x = sr.ReadInt16();
+
+                    Console.WriteLine(pos.ToString("X02") + " " + x.ToString("x2"));
+                }
+                return;
+            }
+
+
+            if (args.Length == 2)
+            {
+                int pos = Int16.Parse(args[0], System.Globalization.NumberStyles.HexNumber);
+                int val = Int16.Parse(args[1], System.Globalization.NumberStyles.HexNumber);
+                Console.WriteLine(pos.ToString("X02") + ": " +val.ToString("X02"));
+                using (var sw = new BinaryWriter(File.OpenWrite(path)))
+                {
+                    sw.BaseStream.Seek(pos, SeekOrigin.Begin);                    
+                    sw.Write(val);
+                }
+                return;
+            }
             Console.WriteLine("Convert on " + path);
             using (var sr = new BinaryReader(File.OpenRead(path)))
             {
@@ -54,4 +81,5 @@ namespace frog_updater
 
         }
     }
+   
 }
