@@ -10,9 +10,11 @@ namespace frog_updater
 {
     class Program
     {
-        private static string path = @"c:\t\jinyong\R2.RPG";
+        private static string path = @"c:\t\jinyong\R2.GRP";
         private static readonly int ZIZHI_POS = 0x3bc;
         private static readonly int WUGONG_POS = 0x3c2;
+        private static readonly Int16 FROG_CODE = 0x16;
+        private static readonly Int16 DUMB_CODE = 0x2c;
 
         static void Main(string[] args)
         {
@@ -58,9 +60,9 @@ namespace frog_updater
             using (var sw = new BinaryWriter(File.OpenWrite(path)))
             {
                 sw.BaseStream.Seek(ZIZHI_POS, SeekOrigin.Begin);
-                Int16 newz = 0x22;
+                Int16 newz = DUMB_CODE;
                 sw.Write(newz);
-                Int16 neww = 0x16;
+                Int16 neww = FROG_CODE;
                 sw.BaseStream.Seek(WUGONG_POS, SeekOrigin.Begin);
                 sw.Write(neww);
             }
